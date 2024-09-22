@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.validator.constraints.Length;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,6 +29,9 @@ public class CompanyEntity {
 
   @Email(message = "Email should be valid")
   private String email;
+
+  @Length(min = 10, max = 100, message = "Password must be between 10 and 100 characters")
+  private String password;
 
   private String website;
   private String name;
