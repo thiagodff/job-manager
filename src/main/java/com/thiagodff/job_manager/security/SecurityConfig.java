@@ -11,7 +11,12 @@ public class SecurityConfig {
   // avisa ao spring para sobrescrever o método já implementado pelo spring security
   @Bean
   SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http.csrf(csrf -> csrf.disable());
+    http.csrf(csrf -> csrf.disable())
+      .authorizeHttpRequests(auth -> {
+        auth.requestMatchers("/candidate/").permitAll()
+          .requestMatchers("/company/").permitAll();
+        auth.anyRequest().authenticated();
+      });
     return http.build();
   }
 }
