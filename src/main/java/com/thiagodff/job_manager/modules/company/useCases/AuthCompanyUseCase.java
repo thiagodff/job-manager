@@ -20,7 +20,7 @@ import com.thiagodff.job_manager.modules.company.repositories.CompanyRepository;
 public class AuthCompanyUseCase {
 
   @Value("${security.jwt.secret}")
-  private String secreteKey;
+  private String secretKey;
 
   @Autowired
   private CompanyRepository companyRepository;
@@ -41,7 +41,7 @@ public class AuthCompanyUseCase {
       throw new AuthenticationException();
     }
 
-    Algorithm algorithm = Algorithm.HMAC256(secreteKey);
+    Algorithm algorithm = Algorithm.HMAC256(secretKey);
     var token = JWT.create()
       .withIssuer("quare_software")
       .withExpiresAt(Instant.now().plus(Duration.ofHours(2)))
