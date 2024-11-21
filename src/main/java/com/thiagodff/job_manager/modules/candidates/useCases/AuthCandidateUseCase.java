@@ -21,7 +21,7 @@ import com.thiagodff.job_manager.modules.candidates.dto.AuthCandidateResponseDTO
 @Service
 public class AuthCandidateUseCase {
 
-  @Value("${security.token.secret.candidate}")
+  @Value("${security.jwt.secret.candidate}")
   private String secretKey;
 
   @Autowired
@@ -44,15 +44,17 @@ public class AuthCandidateUseCase {
     }
 
     Algorithm algorithm = Algorithm.HMAC256(secretKey);
+    var expiresIn = Instant.now().plus(Duration.ofMinutes(10));
     var token = JWT.create()
       .withIssuer("quare_software")
       .withSubject(candidate.getId().toString())
       .withClaim("roles", Arrays.asList("candidate"))
-      .withExpiresAt(Instant.now().plus(Duration.ofMinutes(10)))
+      .withExpiresAt(expiresIn)
       .sign(algorithm);
 
     var authCandidateResponse = AuthCandidateResponseDTO.builder()
       .access_token(token)
+      .expires_in(expiresIn.toEpochMilli())
       .build();
 
     return authCandidateResponse;
