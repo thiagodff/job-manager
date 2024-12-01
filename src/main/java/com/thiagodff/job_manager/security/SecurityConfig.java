@@ -15,6 +15,9 @@ public class SecurityConfig {
   @Autowired
   private SecurityFilter securityFilter;
 
+  @Autowired
+  private SecurityCandidateFilter securityCandidateFilter;
+
   // avisa ao spring para sobrescrever o método já implementado pelo spring security
   @Bean
   SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -22,11 +25,12 @@ public class SecurityConfig {
       .authorizeHttpRequests(auth -> {
         auth.requestMatchers("/candidate/").permitAll()
           .requestMatchers("/company/").permitAll()
-          .requestMatchers("/auth/company").permitAll()
+          .requestMatchers("/company/auth").permitAll()
           .requestMatchers("/candidate/auth").permitAll();
         auth.anyRequest().authenticated();
       })
       // um filter/middleware/interceptor para todas as requisições
+      .addFilterBefore(securityCandidateFilter, BasicAuthenticationFilter.class)
       .addFilterBefore(securityFilter, BasicAuthenticationFilter.class);
     return http.build();
   }
