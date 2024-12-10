@@ -1,5 +1,6 @@
 package com.thiagodff.job_manager.security;
 
+import org.hibernate.annotations.CompositeType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
